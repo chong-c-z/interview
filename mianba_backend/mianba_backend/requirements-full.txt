@@ -1,0 +1,4 @@
+# 本地开发（与云端相同，表情识别已改由前端 face-api.js 完成）
+# pip install -r requirements-full.txt
+
+-r requirements.txt
