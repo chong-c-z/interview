@@ -1,0 +1,55 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'yarn'
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Build
+        run: yarn build
+        env:
+          NODE_ENV: production
+          PUBLIC_PATH: /interview
+
+      - name: Verify build output 📋
+        run: |
+          echo "📁 Build output structure:"
+          ls -la build/
+          echo ""
+          echo "📄 Checking index.html exists:"
+          test -f build/index.html && echo "✅ index.html found" || echo "❌ index.html NOT found"
+          echo ""
+          echo "🔍 Sample of index.html (first 30 lines):"
+          head -30 build/index.html
+
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: build
+          branch: gh-pages
+          token: ${{ secrets.GITHUB_TOKEN }}
+          clean: true
+          clean-exclude: |
+            .nojekyll
+            CNAME
