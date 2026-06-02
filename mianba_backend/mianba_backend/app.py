@@ -1,33 +1,43 @@
 # ============================================================
-# 镜面 - Python 后端服务
+# 镜面 - Python 后端服务（使用 Cloudflare Workers AI，完全免费）
 # 本地: python app.py
-# 云端: gunicorn app:app (见 Procfile)
+# 云端: gunicorn app:app
 # ============================================================
 
 import json
 import os
 import re
 
+import requests as http_requests
 from flask import Flask, jsonify, request
 from flask_cors import CORS
-from openai import OpenAI
 
 app = Flask(__name__)
 CORS(app)
-DASHSCOPE_API_KEY = os.environ.get(
-    "DASHSCOPE_API_KEY",
-    "sk-a465055d21dd477c9389ed3068c7fdaa",  # 改这里
-)
 
-client = OpenAI(
-    api_key=DASHSCOPE_API_KEY,
-    base_url=os.environ.get(
-        "OPENAI_BASE_URL",
-        "https://dashscope.aliyuncs.com/compatible-mode/v1",
-    ),
-)
+# ============================================================
+# Cloudflare Workers AI 配置（完全免费，每天10000次）
+# ============================================================
+CLOUDFLARE_ACCOUNT_ID = os.environ.get("CLOUDFLARE_ACCOUNT_ID", "d23a5a13dd5ae2621d3953b34301799b")
+CLOUDFLARE_API_TOKEN = os.environ.get("CLOUDFLARE_API_TOKEN", "cfut_7YwV2V5my7qrjwBqm5pJVVLX7ltK56JvaWpeY5449e0f6297")
+CLOUDFLARE_MODEL = "@cf/meta/llama-3.3-70b-instruct-fp8-fast"
+CLOUDFLARE_API_URL = f"https://api.cloudflare.com/client/v4/accounts/{CLOUDFLARE_ACCOUNT_ID}/ai/run/{CLOUDFLARE_MODEL}"
 
-LLM_MODEL = os.environ.get("LLM_MODEL", "qwen-plus")
+
+def call_llm(messages: list, max_tokens: int = 800) -> str:
+    """统一调用 Cloudflare Workers AI"""
+    headers = {
+        "Authorization": f"Bearer {CLOUDFLARE_API_TOKEN}",
+        "Content-Type": "application/json",
+    }
+    resp = http_requests.post(
+        CLOUDFLARE_API_URL,
+        headers=headers,
+        json={"messages": messages, "max_tokens": max_tokens},
+        timeout=60,
+    )
+    resp.raise_for_status()
+    return resp.json()["result"]["response"]
 
 
 def _interviewer_system_prompt(job_type: str) -> str:
@@ -47,8 +57,7 @@ def _parse_json_from_text(result_text: str):
 
 
 # ============================================================
-# 统一 AI 接口：/score-answer（mode 区分场景）
-#   mode=score（默认）| interview_chat | interview_summary | model_answer
+# 统一 AI 接口：/score-answer
 # ============================================================
 @app.route("/score-answer", methods=["POST"])
 def score_answer():
@@ -99,17 +108,12 @@ def score_answer():
 }}"""
 
     try:
-        response = client.chat.completions.create(
-            model=LLM_MODEL,
-            messages=[{"role": "user", "content": prompt}],
-            max_tokens=800,
-            temperature=0.7,
-        )
-        result = _parse_json_from_text(response.choices[0].message.content.strip())
+        messages = [{"role": "user", "content": prompt}]
+        result_text = call_llm(messages, max_tokens=800)
+        result = _parse_json_from_text(result_text)
         return jsonify(result)
     except Exception as e:
         import traceback
-
         traceback.print_exc()
         return jsonify({"error": f"AI评分失败: {str(e)}"}), 500
 
@@ -117,12 +121,10 @@ def score_answer():
 def _handle_interview_chat(data, job_type: str):
     messages = data.get("messages", [])
     if not messages:
-        return jsonify(
-            {
-                "reply": "你好，我是今天的面试官，请先做个自我介绍。",
-                "done": False,
-            }
-        )
+        return jsonify({
+            "reply": "你好，我是今天的面试官，请先做个自我介绍。",
+            "done": False,
+        })
 
     api_messages = [{"role": "system", "content": _interviewer_system_prompt(job_type)}]
     for m in messages:
@@ -132,13 +134,7 @@ def _handle_interview_chat(data, job_type: str):
         api_messages.append({"role": role, "content": m.get("content", "")})
 
     try:
-        response = client.chat.completions.create(
-            model=LLM_MODEL,
-            messages=api_messages,
-            max_tokens=200,
-            temperature=0.75,
-        )
-        reply = response.choices[0].message.content.strip()
+        reply = call_llm(api_messages, max_tokens=200)
         return jsonify({"reply": reply, "done": False})
     except Exception as e:
         return jsonify({"error": f"对话失败: {str(e)}"}), 500
@@ -149,12 +145,10 @@ def _handle_interview_summary(data, job_type: str):
     if not messages:
         return jsonify({"error": "没有对话记录"}), 400
 
-    transcript = "\n".join(
-        [
-            f"{'面试官' if m.get('role') == 'assistant' else '候选人'}：{m.get('content', '')}"
-            for m in messages
-        ]
-    )
+    transcript = "\n".join([
+        f"{'面试官' if m.get('role') == 'assistant' else '候选人'}：{m.get('content', '')}"
+        for m in messages
+    ])
 
     prompt = f"""你是一位{job_type}方向的资深面试官，刚完成一场应届生的真实模拟面试。
 
@@ -175,13 +169,8 @@ def _handle_interview_summary(data, job_type: str):
 }}"""
 
     try:
-        response = client.chat.completions.create(
-            model=LLM_MODEL,
-            messages=[{"role": "user", "content": prompt}],
-            max_tokens=900,
-            temperature=0.7,
-        )
-        result = _parse_json_from_text(response.choices[0].message.content.strip())
+        result_text = call_llm([{"role": "user", "content": prompt}], max_tokens=900)
+        result = _parse_json_from_text(result_text)
         return jsonify(result)
     except Exception as e:
         return jsonify({"error": f"综合评价失败: {str(e)}"}), 500
@@ -202,20 +191,14 @@ def _handle_model_answer(data, job_type: str):
 要求：使用STAR法则或清晰层次，语气自然真诚，有具体细节，不要空洞套话。直接输出回答正文，不要加标题或JSON。"""
 
     try:
-        response = client.chat.completions.create(
-            model=LLM_MODEL,
-            messages=[{"role": "user", "content": prompt}],
-            max_tokens=600,
-            temperature=0.7,
-        )
-        answer = response.choices[0].message.content.strip()
+        answer = call_llm([{"role": "user", "content": prompt}], max_tokens=600)
         return jsonify({"answer": answer, "model_answer": answer})
     except Exception as e:
         return jsonify({"error": f"生成失败: {str(e)}"}), 500
 
 
 # ============================================================
-# 综合面试报告（题库练习）
+# 综合面试报告
 # ============================================================
 @app.route("/generate-report", methods=["POST"])
 def generate_report():
@@ -228,12 +211,10 @@ def generate_report():
     if not qa_list:
         return jsonify({"error": "没有面试数据"}), 400
 
-    qa_text = "\n".join(
-        [
-            f"Q{i+1}: {item.get('question', '')}\nA{i+1}: {item.get('answer', '')}\n得分: {item.get('score', 0)}分"
-            for i, item in enumerate(qa_list)
-        ]
-    )
+    qa_text = "\n".join([
+        f"Q{i+1}: {item.get('question', '')}\nA{i+1}: {item.get('answer', '')}\n得分: {item.get('score', 0)}分"
+        for i, item in enumerate(qa_list)
+    ])
     avg_score = sum(item.get("score", 0) for item in qa_list) / len(qa_list) if qa_list else 0
     face_comment = face_summary.get("comment", "表情自然")
 
@@ -256,13 +237,8 @@ def generate_report():
 }}"""
 
     try:
-        response = client.chat.completions.create(
-            model=LLM_MODEL,
-            messages=[{"role": "user", "content": prompt}],
-            max_tokens=800,
-            temperature=0.7,
-        )
-        result = _parse_json_from_text(response.choices[0].message.content.strip())
+        result_text = call_llm([{"role": "user", "content": prompt}], max_tokens=800)
+        result = _parse_json_from_text(result_text)
         return jsonify(result)
     except Exception as e:
         return jsonify({"error": f"报告生成失败: {str(e)}"}), 500
@@ -270,17 +246,17 @@ def generate_report():
 
 @app.route("/health", methods=["GET"])
 def health():
-    return jsonify({"status": "ok", "message": "镜面后端运行正常 ✓"})
+    return jsonify({"status": "ok", "message": "镜面后端运行正常 ✓（Cloudflare AI）"})
 
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     print("=" * 50)
-    print("镜面后端启动中...")
+    print("镜面后端启动中（Cloudflare Workers AI）...")
     print(f"访问 http://localhost:{port}/health")
     print("=" * 50)
     app.run(
-        debug=os.environ.get("FLASK_DEBUG", "true").lower() == "true",
+        debug=True,
         host="0.0.0.0",
         port=port,
     )

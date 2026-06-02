@@ -1,8 +1,4 @@
-# 云端部署基础版（Render 等免费实例）
-# 不含 DeepFace / TensorFlow / OpenCV，内存占用低
-# 部署时请设置环境变量: ENABLE_FACE_ANALYSIS=false
-
 flask==3.0.3
 flask-cors==4.0.1
-openai==1.35.0
-gunicorn==22.0.0
+requests==2.31.0
+gunicorn==21.2.0
