@@ -19,7 +19,8 @@ CORS(app)
 # Cloudflare Workers AI 配置（完全免费，每天10000次）
 # ============================================================
 CLOUDFLARE_ACCOUNT_ID = os.environ.get("CLOUDFLARE_ACCOUNT_ID", "d23a5a13dd5ae2621d3953b34301799b")
-CLOUDFLARE_API_TOKEN = os.environ.get("CLOUDFLARE_API_TOKEN", "cfut_7YwV2V5my7qrjwBqm5pJVVLX7ltK56JvaWpeY5449e0f6297")
+CLOUDFLARE_API_TOKEN = os.environ.get("CLOUDFLARE_API_TOKEN", "curl "https://api.cloudflare.com/client/v4/user/tokens/verify" \
+  -H "Authorization: Bearer cfut_k91gRfeRtSlk1FCM9c2Mf9WsgTp7Qr3srmofUUwRaa2efcf7"")
 CLOUDFLARE_MODEL = "@cf/meta/llama-3.3-70b-instruct-fp8-fast"
 CLOUDFLARE_API_URL = f"https://api.cloudflare.com/client/v4/accounts/{CLOUDFLARE_ACCOUNT_ID}/ai/run/{CLOUDFLARE_MODEL}"
 
