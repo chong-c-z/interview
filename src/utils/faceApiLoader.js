@@ -22,7 +22,7 @@ const EXPRESSION_CN = {
   sad: { cn: '悲伤', bonus: -5, comment: '表情有些低落，注意调整状态' },
   angry: { cn: '紧张', bonus: -8, comment: '面部略显紧张，深呼吸放松' },
   fearful: { cn: '紧张', bonus: -8, comment: '看起来有些紧张，保持自信' },
-  disgusted: { cn: '不适', bonus: -10, comment: '注意面部放松' },
+  disgusted: { cn: '不悦', bonus: -10, comment: '注意面部放松' },
   surprised: { cn: '惊讶', bonus: 0, comment: '表情较为生动' },
 };
 
@@ -66,7 +66,7 @@ export async function analyzeVideoFrame(video) {
     return {
       expression: 'neutral',
       emotionCn: '未检测到人脸',
-      comment: '请将面部保持在画面中央',
+      comment: '请将面部保持在画面中',
       scoreBonus: 0,
       headDown: false,
       headPose: 'upright',

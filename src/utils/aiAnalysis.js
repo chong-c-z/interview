@@ -12,7 +12,7 @@ const feedbackFromQuality = (quality, goodText, fairText, poorText) => {
   return poorText;
 };
 
-/** 将后端 /score-answer 响应映射为 UI 使用的分析结构 */
+/** 将后端 /score-answer 响应映射到 UI 使用的分析结果 */
 export const mapBackendScoreToAnalysis = (apiResult) => {
   const score = apiResult.total_score ?? 0;
   const dims = apiResult.dimensions || {};
@@ -188,7 +188,7 @@ const analyzeAnswerLength = (answer) => {
 };
 
 const analyzeFluency = (answer) => {
-  const sentences = answer.split(/[。！？.!?]/).filter((s) => s.trim());
+  const sentences = answer.split(/[。！？?!?]/).filter((s) => s.trim());
   const avgSentenceLength =
     sentences.length > 0 ? answer.length / sentences.length : 0;
 

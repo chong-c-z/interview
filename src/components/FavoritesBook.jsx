@@ -19,7 +19,7 @@ const FavoritesBook = ({ favorites, onClose, onRemove }) => (
       <div className="p-4 overflow-y-auto flex-1">
         {favorites.length === 0 ? (
           <p className="text-center text-gray-500 py-8 text-sm">
-            答题评分后可点击「收藏本题」
+            答题评分后可点击「收藏本题�?
           </p>
         ) : (
           favorites.map((item) => (

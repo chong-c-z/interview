@@ -27,39 +27,38 @@ const InterviewerFeedback = ({
     },
     contentAnalysis: {
       quality: 'fair',
-      feedback: '内容丰富,有深度'
+      feedback: '内容丰富,有深�?
     },
     suggestions: [],
-    detailedEvaluation: '嗯，继续努力吧。'
+    detailedEvaluation: '嗯，继续努力吧�?
   };
 
   const analysis = aiAnalysis || defaultAnalysis;
-  // 仅在后端明确降级时显示提示（避免误把 undefined 或顶层 fallback 字段当成降级）
-  const isFallback =
+  // 仅在后端明确降级时显示提示（避免误把 undefined 或顶�?fallback 字段当成降级�?  const isFallback =
     analysis.fallback === true && analysis.fromBackend !== true;
 
   const getFeedbackMessage = () => {
     if (analysis.score >= 80) {
       return {
-        message: '嗯，回答得不错。',
+        message: '嗯，回答得不错�?,
         tone: '赞赏',
         color: 'text-green-400'
       };
     } else if (analysis.score >= 60) {
       return {
-        message: '还行，不过还有改进空间。',
+        message: '还行，不过还有改进空间�?,
         tone: '鼓励',
         color: 'text-blue-400'
       };
     } else if (analysis.score >= 40) {
       return {
-        message: '基本合格，但需要更深入地思考。',
+        message: '基本合格，但需要更深入地思考�?,
         tone: '指导',
         color: 'text-yellow-400'
       };
     } else {
       return {
-        message: '还有很大提升空间，多思考一下。',
+        message: '还有很大提升空间，多思考一下�?,
         tone: '建议',
         color: 'text-red-400'
       };
@@ -82,7 +81,7 @@ const InterviewerFeedback = ({
             )}
           </div>
           
-          <h3 className="text-xl font-bold mb-2 text-white">面试官评价</h3>
+          <h3 className="text-xl font-bold mb-2 text-white">面试官评�?/h3>
           <p className={`text-sm font-medium mb-3 ${feedback.color}`}>
             [{feedback.tone}语气] {feedback.message}
           </p>
@@ -91,15 +90,14 @@ const InterviewerFeedback = ({
         {isFallback && (
           <div className="mb-4 p-3 bg-yellow-900 border border-yellow-700 rounded-lg">
             <p className="text-sm text-yellow-300">
-              后端 AI 服务暂不可用，以下为本地规则评分结果。请确认后端已启动（http://localhost:5000）。
-            </p>
+              后端 AI 服务暂不可用，以下为本地规则评分结果。请确认后端已启动（https://interview-3mns.onrender.com）�?            </p>
           </div>
         )}
 
         {analysis.highlight && (
           <div className="mb-4 p-3 bg-green-900 border border-green-700 rounded-lg">
             <p className="text-sm text-green-300">
-              <span className="font-medium">亮点：</span>
+              <span className="font-medium">亮点�?/span>
               {analysis.highlight}
             </p>
           </div>
@@ -133,7 +131,7 @@ const InterviewerFeedback = ({
               <Clock className="w-4 h-4 mr-1" />
               用时
             </span>
-            <span className="font-bold text-gray-200">{timeUsed}秒</span>
+            <span className="font-bold text-gray-200">{timeUsed}�?/span>
           </div>
 
           {isUnderPressure && (
@@ -142,7 +140,7 @@ const InterviewerFeedback = ({
                 <Star className="w-4 h-4 mr-1" />
                 压力模式
               </span>
-              <span className="font-bold text-orange-400">已激活</span>
+              <span className="font-bold text-orange-400">已激�?/span>
             </div>
           )}
         </div>
@@ -150,8 +148,7 @@ const InterviewerFeedback = ({
         <div className="mb-6">
           <h4 className="text-lg font-medium mb-3 flex items-center text-white">
             <FileText className="w-5 h-5 mr-2 text-blue-400" />
-            面试官评价
-          </h4>
+            面试官评�?          </h4>
           <div className="p-4 bg-blue-900 rounded-lg">
             <p className="text-sm text-gray-300 leading-relaxed">
               {analysis.detailedEvaluation}
@@ -174,7 +171,7 @@ const InterviewerFeedback = ({
                   analysis.lengthAnalysis?.quality === 'fair' ? 'text-yellow-400' : 'text-red-400'
                 }`}>
                   {analysis.lengthAnalysis?.quality === 'good' ? '良好' :
-                   analysis.lengthAnalysis?.quality === 'fair' ? '一般' : '需改进'}
+                   analysis.lengthAnalysis?.quality === 'fair' ? '一�? : '需改进'}
                 </span>
               </div>
               <p className="text-xs text-gray-400">{analysis.lengthAnalysis?.feedback || '暂无反馈'}</p>
@@ -182,13 +179,13 @@ const InterviewerFeedback = ({
 
             <div className="p-3 bg-gray-700 rounded-lg">
               <div className="flex items-center justify-between mb-1">
-                <span className="text-sm font-medium text-gray-300">语言流畅度</span>
+                <span className="text-sm font-medium text-gray-300">语言流畅�?/span>
                 <span className={`text-sm ${
                   analysis.fluencyAnalysis?.fluency === 'good' ? 'text-green-400' :
                   analysis.fluencyAnalysis?.fluency === 'fair' ? 'text-yellow-400' : 'text-red-400'
                 }`}>
                   {analysis.fluencyAnalysis?.fluency === 'good' ? '良好' :
-                   analysis.fluencyAnalysis?.fluency === 'fair' ? '一般' : '需改进'}
+                   analysis.fluencyAnalysis?.fluency === 'fair' ? '一�? : '需改进'}
                 </span>
               </div>
               <p className="text-xs text-gray-400">{analysis.fluencyAnalysis?.feedback || '暂无反馈'}</p>
@@ -202,7 +199,7 @@ const InterviewerFeedback = ({
                   analysis.logicAnalysis?.logic === 'fair' ? 'text-yellow-400' : 'text-red-400'
                 }`}>
                   {analysis.logicAnalysis?.logic === 'good' ? '良好' :
-                   analysis.logicAnalysis?.logic === 'fair' ? '一般' : '需改进'}
+                   analysis.logicAnalysis?.logic === 'fair' ? '一�? : '需改进'}
                 </span>
               </div>
               <p className="text-xs text-gray-400">{analysis.logicAnalysis?.feedback || '暂无反馈'}</p>
@@ -216,7 +213,7 @@ const InterviewerFeedback = ({
                   analysis.contentAnalysis?.quality === 'fair' ? 'text-yellow-400' : 'text-red-400'
                 }`}>
                   {analysis.contentAnalysis?.quality === 'good' ? '良好' :
-                   analysis.contentAnalysis?.quality === 'fair' ? '一般' : '需改进'}
+                   analysis.contentAnalysis?.quality === 'fair' ? '一�? : '需改进'}
                 </span>
               </div>
               <p className="text-xs text-gray-400">{analysis.contentAnalysis?.feedback || '暂无反馈'}</p>

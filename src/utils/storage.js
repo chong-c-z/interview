@@ -43,7 +43,7 @@ export const updateUserProgress = (progress) => {
   return setStorageData(STORAGE_KEYS.USER_PROGRESS, progress);
 };
 
-/** 记录一次练习得分，更新总次数、平均分相关数据、本周练习天数 */
+/** 记录一次练习得分，更新总次数、平均分相关数据、本周练习天�?*/
 export const recordPracticeScore = (score) => {
   const progress = getUserProgress();
   const today = new Date().toISOString().slice(0, 10);

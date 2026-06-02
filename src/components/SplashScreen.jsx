@@ -20,7 +20,7 @@ const SplashScreen = ({ onComplete, duration = 2000 }) => {
     >
       <div className="relative mb-8">
         <div className="w-24 h-24 rounded-2xl bg-gradient-to-br from-amber-500/20 to-amber-600/5 border border-amber-500/40 flex items-center justify-center animate-pulse">
-          <span className="text-5xl font-bold text-amber-400 font-serif">镜</span>
+          <span className="text-5xl font-bold text-amber-400 font-serif">✨</span>
         </div>
         <div className="absolute -inset-4 rounded-3xl border border-amber-500/20 animate-ping opacity-30" />
       </div>

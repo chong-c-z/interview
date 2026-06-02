@@ -8,7 +8,7 @@ const UserNickname = ({ onNicknameChange }) => {
   const [draft, setDraft] = useState(nickname);
 
   const save = () => {
-    const name = draft.trim() || '面试者';
+   const name = draft.trim() || '面试者';
     setNickname(name);
     setNick(name);
     setEditing(false);

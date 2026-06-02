@@ -64,7 +64,7 @@ const RealInterview = ({ position, positionName, onBack, nickname }) => {
     const text = input.trim();
     if (!text || loading || phase !== 'chat') return;
     if (text.length < 5) {
-      setError('回答请至少 5 个字');
+      setError('回答请至少输入 5 个字');
       return;
     }
     setError('');
@@ -178,7 +178,7 @@ const RealInterview = ({ position, positionName, onBack, nickname }) => {
             <div>
               <span className={`font-semibold ${theme.pageText}`}>真实面试</span>
               <span className={`ml-2 text-xs ${theme.muted}`}>
-                {positionName} · 第 {userRoundCount}/{MAX_USER_ROUNDS} 轮
+                {positionName} · 第 {userRoundCount}/{MAX_USER_ROUNDS} 题
               </span>
             </div>
             <span className={`text-xs ${theme.muted}`}>{nickname}</span>

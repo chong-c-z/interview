@@ -27,13 +27,13 @@ const HistoryModal = ({ history, onClose }) => (
                     <Briefcase className="w-3.5 h-3.5 text-amber-500" />
                     {positionNames[item.position] || item.position}
                   </span>
-                  <span className="text-amber-400 font-bold text-sm">{item.avgScore}分</span>
+                  <span className="text-amber-400 font-bold text-sm">{item.avgScore}</span>
                 </div>
                 <div className="flex items-center gap-1 text-xs text-gray-500">
                   <Clock className="w-3 h-3" />
                   {new Date(item.timestamp).toLocaleString('zh-CN')}
                 </div>
-                <div className="text-xs text-gray-600 mt-1">共 {item.questionCount} 题</div>
+                <div className="text-xs text-gray-600 mt-1">{item.questionCount} 题</div>
               </li>
             ))}
           </ul>

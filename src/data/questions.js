@@ -5,7 +5,7 @@ export const questionBank = buildQuestionBank();
 
 export const encouragementMessages = [
   '太棒了！继续保持这种状态！',
-  '回答得很全面，逻辑清晰！',
+  '回答得很全面，逻辑清晰',
   '关键词都覆盖到了，很不错！',
   '这就是我们想要听到的答案！',
   '你的思考很深入，继续加油！',

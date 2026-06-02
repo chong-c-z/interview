@@ -68,9 +68,9 @@ const ModelAnswerPanel = ({ question, position, keywords, onClose }) => {
 
 function getLocalModelAnswer(question, keywords = []) {
   const kw = keywords.slice(0, 3).join('、') || '核心能力';
-  return `【参考结构 - STAR法则】
+  return `【参考结构】- STAR法则
 
-针对「${question}」这类问题，建议按以下方式组织回答：
+针对“${question}”这类问题，建议按以下方式组织回答：
 
 1. 情境（Situation）：简要说明背景，例如在学校项目/实习中的具体场景。
 2. 任务（Task）：你承担的目标是什么，与${kw}相关。
@@ -78,7 +78,7 @@ function getLocalModelAnswer(question, keywords = []) {
 4. 结果（Result）：取得了什么成果，以及你的反思与收获。
 
 示范开头：
-"在我大三的XX实习中，我负责……首先我通过……最终实现了……这段经历让我对岗位有了更深的理解。"
+“在我大三的XX实习中，我负责……首先我通过……最终实现了……这段经历让我对岗位有了更深的理解。”
 
 提示：结合真实经历，控制在1-2分钟口述长度，语气自然自信。`;
 }

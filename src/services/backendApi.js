@@ -1,4 +1,4 @@
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://interview-3mns.onrender.com';
 const REQUEST_TIMEOUT_MS = 60000;
 
 export const BACKEND_OFFLINE_MSG =
@@ -62,7 +62,7 @@ async function fetchWithTimeout(url, options = {}) {
   }
 }
 
-/** 统一 AI 接口：mode 可选 score | interview_chat | interview_summary | model_answer */
+/** 统一 AI 接口：mode 可以是 score | interview_chat | interview_summary | model_answer */
 export async function scoreAnswer(payload) {
   return fetchWithTimeout(`${API_BASE_URL}/score-answer`, {
     method: 'POST',

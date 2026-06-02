@@ -55,7 +55,6 @@ const InterviewRightPanel = ({
     return score >= 80 ? 'text-emerald-600' : score >= 60 ? 'text-amber-500' : 'text-red-500';
   };
 
-  // 卡片样式根据主题切换
   const cardClass = isDark
     ? 'rounded-xl border border-gray-800 bg-[#121820] p-3'
     : 'rounded-xl border border-gray-200 bg-white p-3 shadow-sm';
@@ -90,10 +89,10 @@ const InterviewRightPanel = ({
       </div>
 
       {/* 面试官观察卡片 */}
-      <div className={`${isDark
-        ? 'rounded-xl border border-gray-800 bg-[#121820]'
-        : 'rounded-xl border border-gray-200 bg-white shadow-sm'
-      } flex-1 min-h-0 flex flex-col overflow-hidden`}>
+      <div className={isDark
+        ? 'rounded-xl border border-gray-800 bg-[#121820] flex-1 min-h-0 flex flex-col overflow-hidden'
+        : 'rounded-xl border border-gray-200 bg-white shadow-sm flex-1 min-h-0 flex flex-col overflow-hidden'
+      }>
         <InterviewerObservation
           detection={detectionData}
           isActive={isActive}

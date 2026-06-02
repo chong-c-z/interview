@@ -26,7 +26,7 @@ const WrongAnswerBook = ({ wrongAnswers, onClose, onRemove }) => {
             <BookOpen className="w-5 h-5 text-red-400 mr-2" />
             <h2 className="text-xl font-bold text-white">错题本</h2>
             <span className="ml-2 px-2 py-1 bg-red-900 text-red-300 text-xs rounded-full">
-              {wrongAnswers.length}题
+              {wrongAnswers.length}
             </span>
           </div>
           <button

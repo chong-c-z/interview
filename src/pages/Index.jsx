@@ -488,7 +488,7 @@ const Index = () => {
               <CompactSidebar progress={userProgress} />
             </div>
             <div className="space-y-2">
-              <SideBtn theme={theme} isDark={isDark} icon={BookOpen} label={`错题本 (${wrongAnswers.length})`} onClick={() => setShowWrongAnswerBook(true)} />
+              <SideBtn theme={theme} isDark={isDark} icon={BookOpen} label={`错题本(${wrongAnswers.length})`} onClick={() => setShowWrongAnswerBook(true)} />
               <SideBtn theme={theme} isDark={isDark} icon={Star} label={`收藏 (${favorites.length})`} onClick={() => setShowFavorites(true)} />
               <SideBtn
                 theme={theme}
@@ -602,11 +602,11 @@ const Index = () => {
                                 : 'bg-slate-100 text-slate-600 border-slate-200'
                             }`}
                           >
-                            {currentQuestion.difficulty === 'easy'
-                              ? '简单'
-                              : currentQuestion.difficulty === 'medium'
-                                ? '中等'
-                                : '困难'}
+                         {currentQuestion.difficulty === 'easy'
+                         ? '简单'
+                           : currentQuestion.difficulty === 'medium'
+                         ? '中等'
+                         : '困难'}
                           </span>
                         </div>
                         {isQuestionTimerActive && (
@@ -884,8 +884,7 @@ const AppHeader = ({ theme, isDark, toggleTheme, nickname, setNickname, onHistor
         <div className="hidden sm:flex items-center gap-2">
           <span className={`text-2xl font-serif font-bold ${theme.brand}`}>镜面</span>
           <span className={`text-xs hidden md:inline ${theme.muted}`}>
-            AI驱动的智能面试训练系统
-          </span>
+            AI驱动的智能面试训练系统          </span>
         </div>
       </div>
       <div className="flex items-center gap-2">
@@ -923,7 +922,7 @@ const PositionPicker = ({ onSelect, getPositionName, theme }) => (
           className={`p-6 rounded-xl border text-left transition-all hover:scale-[1.02] ${theme.cardMuted}`}
         >
           <div className={`text-xl font-bold ${theme.brand}`}>{getPositionName(position)}</div>
-          <div className={`text-sm mt-1 ${theme.muted}`}>{questionBank[position].length} 道题目</div>
+          <div className={`text-sm mt-1 ${theme.muted}`}>{questionBank[position].length} 道题</div>
         </button>
       ))}
     </div>

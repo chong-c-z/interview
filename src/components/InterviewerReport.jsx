@@ -44,7 +44,7 @@ const InterviewerReport = ({
         setAiReport(result);
         setReportFromBackend(true);
       } catch (error) {
-        console.warn('综合报告生成失败，使用本地计算:', error.message);
+        console.warn('综合报告生成失败，使用本地计算', error.message);
         setReportFromBackend(false);
       } finally {
         setReportLoading(false);
@@ -146,7 +146,7 @@ const InterviewerReport = ({
       return {
         score: overallScore,
         level: '一般',
-        description: '面试官认为你有改进空间，需要注意细节表现',
+        description: '面试官认为你有改进空间，需要注意细节表达',
         color: 'text-yellow-600',
         bgColor: 'bg-yellow-50',
       };

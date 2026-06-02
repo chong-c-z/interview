@@ -53,8 +53,7 @@ const ComprehensiveScoring = ({
 
       setOverallScore(finalScore);
 
-      // 通知父组件评分完成
-      if (onScoreComplete) {
+      // 通知父组件评分完�?      if (onScoreComplete) {
         onScoreComplete({
           aiScore: aiResult,
           overallScore: finalScore,
@@ -97,7 +96,7 @@ const ComprehensiveScoring = ({
       content: 0.5,      // 内容质量 50%
       expression: 0.2,   // 表情 20%
       eyeContact: 0.15,  // 眼神交流 15%
-      posture: 0.15      // 姿态 15%
+      posture: 0.15      // 姿�?15%
     };
 
     const weightedScore = 
@@ -111,15 +110,13 @@ const ComprehensiveScoring = ({
 
   const calculateBasicScore = () => {
     // 基础评分逻辑
-    let score = 60; // 基础分
-
+    let score = 60; // 基础�?
     // 根据回答长度调整
     const wordCount = userAnswer.trim().split(/\s+/).length;
     if (wordCount > 100) score += 10;
     else if (wordCount > 50) score += 5;
 
-    // 根据关键词匹配调整
-    const matchedKeywords = keywords.filter(keyword => 
+    // 根据关键词匹配调�?    const matchedKeywords = keywords.filter(keyword => 
       userAnswer.toLowerCase().includes(keyword.toLowerCase())
     );
     score += (matchedKeywords.length / keywords.length) * 20;
@@ -149,7 +146,7 @@ const ComprehensiveScoring = ({
   const getScoreLevel = (score) => {
     if (score >= 85) return '优秀';
     if (score >= 70) return '良好';
-    if (score >= 55) return '一般';
+    if (score >= 55) return '一�?;
     return '需改进';
   };
 
@@ -163,7 +160,7 @@ const ComprehensiveScoring = ({
         {isScoring && (
           <div className="flex items-center text-blue-600">
             <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600 mr-2"></div>
-            AI评分中...
+            AI评分�?..
           </div>
         )}
       </div>
@@ -250,7 +247,7 @@ const ComprehensiveScoring = ({
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center">
               <User className="w-5 h-5 text-orange-600 mr-2" />
-              <span className="font-medium text-gray-700">姿态</span>
+              <span className="font-medium text-gray-700">姿�?/span>
             </div>
             <span className={`text-lg font-bold ${getScoreColor(postureScore || 70)}`}>
               {postureScore || 70}
@@ -279,7 +276,7 @@ const ComprehensiveScoring = ({
               <ul className="space-y-1">
                 {aiScore.suggestions.map((suggestion, index) => (
                   <li key={index} className="text-green-700 text-sm flex items-start">
-                    <span className="text-green-600 mr-2">•</span>
+                    <span className="text-green-600 mr-2">�?/span>
                     {suggestion}
                   </li>
                 ))}
@@ -287,17 +284,17 @@ const ComprehensiveScoring = ({
             </div>
           )}
 
-          {/* 各维度详细评分 */}
+          {/* 各维度详细评�?*/}
           <div className="bg-gray-50 rounded-lg p-4">
-            <h4 className="font-medium text-gray-800 mb-3">各维度详细评分</h4>
+            <h4 className="font-medium text-gray-800 mb-3">各维度详细评�?/h4>
             <div className="space-y-3">
               {aiScore.dimensions && Object.entries(aiScore.dimensions).map(([key, dimension]) => (
                 <div key={key} className="flex items-center justify-between">
                   <span className="text-sm font-medium text-gray-700 capitalize">
-                    {key === 'content' ? '内容完整性' :
-                     key === 'logic' ? '逻辑清晰度' :
+                    {key === 'content' ? '内容完整�? :
+                     key === 'logic' ? '逻辑清晰�? :
                      key === 'professional' ? '专业深度' :
-                     key === 'fluency' ? '表达流畅度' : key}
+                     key === 'fluency' ? '表达流畅�? : key}
                   </span>
                   <div className="flex items-center">
                     <span className={`text-sm font-bold ${getScoreColor(dimension.score)} mr-2`}>

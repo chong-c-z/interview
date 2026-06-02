@@ -6,8 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
  * @param {string} observation.userId - 用户ID
  * @param {string} observation.sessionId - 会话ID
  * @param {string} observation.observationType - 观察类型
- * @param {string} observation.observationValue - 观察值
- * @param {string} observation.message - 观察消息
+ * @param {string} observation.observationValue - 观察�? * @param {string} observation.message - 观察消息
  * @param {string} observation.severity - 严重程度
  */
 export const saveInterviewObservation = async (observation) => {
@@ -33,14 +32,13 @@ export const saveInterviewObservation = async (observation) => {
 
     return data;
   } catch (error) {
-    console.error('保存观察记录时发生错误:', error);
+    console.error('保存观察记录时发生错�?', error);
     return null;
   }
 };
 
 /**
- * 获取用户的面试观察记录
- * @param {string} userId - 用户ID
+ * 获取用户的面试观察记�? * @param {string} userId - 用户ID
  * @param {string} sessionId - 会话ID
  */
 export const getInterviewObservations = async (userId, sessionId) => {
@@ -59,7 +57,7 @@ export const getInterviewObservations = async (userId, sessionId) => {
 
     return data;
   } catch (error) {
-    console.error('获取观察记录时发生错误:', error);
+    console.error('获取观察记录时发生错�?', error);
     return [];
   }
 };
@@ -92,14 +90,13 @@ export const createInterviewSession = async (userId) => {
       sessionId: sessionId
     };
   } catch (error) {
-    console.error('创建面试会话时发生错误:', error);
+    console.error('创建面试会话时发生错�?', error);
     return null;
   }
 };
 
 /**
- * 结束面试会话并保存评分
- * @param {string} sessionId - 会话ID
+ * 结束面试会话并保存评�? * @param {string} sessionId - 会话ID
  * @param {Object} scores - 评分对象
  */
 export const endInterviewSession = async (sessionId, scores) => {
@@ -123,14 +120,13 @@ export const endInterviewSession = async (sessionId, scores) => {
 
     return data[0];
   } catch (error) {
-    console.error('结束面试会话时发生错误:', error);
+    console.error('结束面试会话时发生错�?', error);
     return null;
   }
 };
 
 /**
- * 获取用户的面试历史记录
- * @param {string} userId - 用户ID
+ * 获取用户的面试历史记�? * @param {string} userId - 用户ID
  */
 export const getInterviewHistory = async (userId) => {
   try {
@@ -147,7 +143,7 @@ export const getInterviewHistory = async (userId) => {
 
     return data;
   } catch (error) {
-    console.error('获取面试历史时发生错误:', error);
+    console.error('获取面试历史时发生错�?', error);
     return [];
   }
 };

@@ -4,7 +4,7 @@ import { useTheme } from '../contexts/ThemeContext';
 
 const DETECT_INTERVAL_MS = 2000;
 
-// 低头防抖：连续检测到低头超过此毫秒数才计为一次
+// 低头防抖：连续检测到低头超过此毫秒数才算一次
 const HEAD_DOWN_CONFIRM_MS = 1000;
 
 const FaceDetection = ({
@@ -23,8 +23,7 @@ const FaceDetection = ({
 
   // 低头防抖状态
   const headDownStartRef = useRef(null);   // 开始低头的时间戳
-  const headDownCountedRef = useRef(false); // 本次低头是否已经计数过
-
+  const headDownCountedRef = useRef(false); // 本次低头是否已经计数
   const [isCameraReady, setIsCameraReady] = useState(false);
   const [modelsReady, setModelsReady] = useState(false);
   const [error, setError] = useState(null);
@@ -54,7 +53,7 @@ const FaceDetection = ({
         };
       }
     } catch (err) {
-      console.error('摄像头访问失败:', err);
+      console.error('摄像头访问失败', err);
       setError('无法访问摄像头，请检查权限');
     }
   }, []);
@@ -80,24 +79,20 @@ const FaceDetection = ({
       const detection = await analyzeVideoFrame(videoRef.current);
       setLastEmotion(detection.emotionCn);
 
-      // ============================================================
       // 低头防抖逻辑：
-      // - 开始低头 → 记录时间戳，不立即计数
-      // - 持续低头超过 HEAD_DOWN_CONFIRM_MS → 计为一次，标记已计数
-      // - 抬头 → 清空状态，下次低头才能再计数
-      // ============================================================
+      // - 开始低头：记录时间戳，不立即计数
+      // - 持续低头超过 HEAD_DOWN_CONFIRM_MS 计为一次，标记已计数
+      // - 抬头时清空状态，下次低头才能再计数
       let shouldReportHeadDown = false;
 
       if (detection.headDown) {
         if (headDownStartRef.current === null) {
-          // 刚开始低头
           headDownStartRef.current = Date.now();
           headDownCountedRef.current = false;
         } else if (
           !headDownCountedRef.current &&
           Date.now() - headDownStartRef.current >= HEAD_DOWN_CONFIRM_MS
         ) {
-          // 持续低头超过阈值，且本次还没计过数
           headDownCountedRef.current = true;
           shouldReportHeadDown = true;
         }
@@ -113,7 +108,6 @@ const FaceDetection = ({
         onDetectionUpdate?.({
           ...detection,
           emotionChanged,
-          // 只有真正触发计数时才把 headDown 传给父组件
           headDown: shouldReportHeadDown,
         });
       }

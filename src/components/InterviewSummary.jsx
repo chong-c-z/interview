@@ -36,7 +36,7 @@ const InterviewSummary = ({
           <div>
             <h2 className="text-2xl font-bold text-amber-400">本次面试总结</h2>
             <p className="text-gray-400 text-sm mt-1">
-              {nickname} · {positionName} · {durationText} · 平均 {avgScore} 分
+              {nickname} · {positionName} · {durationText} · 平均 {avgScore} �?
             </p>
           </div>
           <button type="button" onClick={onClose} className="text-gray-500 hover:text-white">
@@ -100,7 +100,7 @@ const InterviewSummary = ({
           >
             {exportCopied ? (
               <>
-                <Check className="w-4 h-4" /> 已复制到剪贴板
+                <Check className="w-4 h-4" /> 已复制到剪贴�?
               </>
             ) : (
               <>

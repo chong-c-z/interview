@@ -3,20 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>页面未找到 - 面试练习工具</title>
+    <title>页面未找�?- 面试练习工具</title>
     <script>
-        // SPA 路由支持：将所有路径重定向到 index.html
+        // SPA 路由支持：将所有路径重定向�?index.html
         const path = window.location.pathname;
         const search = window.location.search;
         
-        // 获取当前路径的 basename（/interview）
-        const basePath = '/interview';
+        // 获取当前路径�?basename�?interview�?        const basePath = '/interview';
         
         // 会话存储当前路径
         sessionStorage.setItem('redirect-path', path + search);
         
-        // 重定向到根路径
-        window.location.replace(basePath + '/');
+        // 重定向到根路�?        window.location.replace(basePath + '/');
     </script>
 </head>
 <body>

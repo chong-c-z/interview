@@ -15,7 +15,7 @@ const DIMENSION_LABELS = {
   content: '内容',
   logic: '逻辑',
   specific: '具体',
-  match: '匹配度',
+  match: '匹配',
 };
 
 function useAnimatedNumber(target, duration = 1200) {

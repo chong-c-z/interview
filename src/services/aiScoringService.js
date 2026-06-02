@@ -75,8 +75,8 @@ export const aiScoringService = {
       return {
         score: basicScore,
         overallFeedback:
-          'AI 评分服务暂时不可用，已使用本地基础规则评分，请稍后重试。',
-        suggestions: ['确保后端服务已启动（http://localhost:5000）'],
+          'AI 评分服务暂时不可用，已使用本地基础规则评分，请稍后重试�?,
+        suggestions: ['确保后端服务已启动（https://interview-3mns.onrender.com�?],
         dimensions: null,
         fromBackend: false,
         fallback: true,
@@ -92,7 +92,7 @@ export const aiScoringService = {
     try {
       await scoreAnswer({
         question: '请介绍一下你自己',
-        answer: '这是一个测试回答',
+        answer: '这是一个测试回�?,
         job_type: '产品',
       });
       return true;

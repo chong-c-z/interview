@@ -24,7 +24,7 @@ const UserProgress = ({ progress, wrongAnswersCount, isDarkMode = false }) => {
     {
       key: 'accuracy',
       icon: Target,
-      label: '正确率',
+      label: '正确�?,
       value: `${accuracy}%`,
       light: 'bg-blue-50 text-blue-700 border-blue-100',
       dark: 'bg-blue-900 text-blue-400',
@@ -44,7 +44,7 @@ const UserProgress = ({ progress, wrongAnswersCount, isDarkMode = false }) => {
     {
       key: 'practiced',
       icon: Star,
-      label: '已练习',
+      label: '已练�?,
       value: progress.questionsAnswered,
       light: 'bg-purple-50 text-purple-700 border-purple-100',
       dark: 'bg-purple-900 text-purple-400',
@@ -73,7 +73,7 @@ const UserProgress = ({ progress, wrongAnswersCount, isDarkMode = false }) => {
             <User className={`w-6 h-6 ${currentRank.color}`} />
           </div>
           <div>
-            <h3 className={`font-bold ${titleClass}`}>面试者</h3>
+            <h3 className={`font-bold ${titleClass}`}>面试�?/h3>
             <p className={`text-sm ${currentRank.color} font-medium`}>
               {currentRank.name}段位
             </p>
@@ -82,7 +82,7 @@ const UserProgress = ({ progress, wrongAnswersCount, isDarkMode = false }) => {
 
         <div className="text-right">
           <div className={`text-2xl font-bold ${expClass}`}>{progress.totalExp}</div>
-          <div className={`text-xs ${subTextClass}`}>经验值</div>
+          <div className={`text-xs ${subTextClass}`}>经验�?/div>
         </div>
       </div>
 

@@ -69,8 +69,7 @@ const CelebrationAnimation = ({ show, onComplete }) => {
           </h2>
           
           <p className="text-gray-300">
-            连续答对3题！经验值+50！
-          </p>
+            连续答对3题！经验�?50�?          </p>
           
           <div className="mt-4 flex justify-center space-x-2">
             {[...Array(3)].map((_, i) => (
