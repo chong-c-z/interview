@@ -18,9 +18,8 @@ CORS(app)
 # ============================================================
 # Cloudflare Workers AI 配置（完全免费，每天10000次）
 # ============================================================
-CLOUDFLARE_ACCOUNT_ID = os.environ.get("CLOUDFLARE_ACCOUNT_ID", "d23a5a13dd5ae2621d3953b34301799b")
-CLOUDFLARE_API_TOKEN = os.environ.get("CLOUDFLARE_API_TOKEN", "curl "https://api.cloudflare.com/client/v4/user/tokens/verify" \
-  -H "Authorization: Bearer cfut_k91gRfeRtSlk1FCM9c2Mf9WsgTp7Qr3srmofUUwRaa2efcf7"")
+CLOUDFLARE_ACCOUNT_ID = os.environ.get("CLOUDFLARE_ACCOUNT_ID")
+CLOUDFLARE_API_TOKEN = os.environ.get("CLOUDFLARE_API_TOKEN")
 CLOUDFLARE_MODEL = "@cf/meta/llama-3.3-70b-instruct-fp8-fast"
 CLOUDFLARE_API_URL = f"https://api.cloudflare.com/client/v4/accounts/{CLOUDFLARE_ACCOUNT_ID}/ai/run/{CLOUDFLARE_MODEL}"
 
@@ -38,7 +37,11 @@ def call_llm(messages: list, max_tokens: int = 800) -> str:
         timeout=60,
     )
     resp.raise_for_status()
-    return resp.json()["result"]["response"]
+    result = resp.json()["result"]["response"]
+    # Cloudflare Workers AI 有时返回 dict 而非 string，统一转换
+    if isinstance(result, dict):
+        result = json.dumps(result, ensure_ascii=False)
+    return result
 
 
 def _interviewer_system_prompt(job_type: str) -> str:
