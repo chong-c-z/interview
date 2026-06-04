@@ -18,6 +18,7 @@ CORS(app)
 # ============================================================
 # Cloudflare Workers AI 配置（完全免费，每天10000次）
 # ============================================================
+
 CLOUDFLARE_ACCOUNT_ID = os.environ.get("CLOUDFLARE_ACCOUNT_ID")
 CLOUDFLARE_API_TOKEN = os.environ.get("CLOUDFLARE_API_TOKEN")
 CLOUDFLARE_MODEL = "@cf/meta/llama-3.3-70b-instruct-fp8-fast"
@@ -250,7 +251,52 @@ def generate_report():
 
 @app.route("/health", methods=["GET"])
 def health():
-    return jsonify({"status": "ok", "message": "镜面后端运行正常 ✓（Cloudflare AI）"})
+    """健康检查 —— 同时测试 Cloudflare AI 是否可达"""
+    # 检查配置是否齐全
+    cf_account = bool(CLOUDFLARE_ACCOUNT_ID)
+    cf_token = bool(CLOUDFLARE_API_TOKEN)
+
+    status_details = {
+        "server": "ok",
+        "cloudflare_account_configured": cf_account,
+        "cloudflare_token_configured": cf_token,
+    }
+
+    # 如果配置齐全，尝试一次轻量调用验证 Token 是否有效
+    if cf_account and cf_token:
+        try:
+            test_url = f"https://api.cloudflare.com/client/v4/accounts/{CLOUDFLARE_ACCOUNT_ID}/ai/run/@cf/meta/llama-3.2-3b-instruct"
+            test_resp = http_requests.post(
+                test_url,
+                headers={
+                    "Authorization": f"Bearer {CLOUDFLARE_API_TOKEN}",
+                    "Content-Type": "application/json",
+                },
+                json={"messages": [{"role": "user", "content": "hi"}], "max_tokens": 5},
+                timeout=15,
+            )
+            if test_resp.status_code == 200:
+                status_details["cloudflare_api"] = "ok"
+                status_details["message"] = "后端运行正常，Cloudflare AI 已连接 ✓"
+            elif test_resp.status_code == 401:
+                status_details["cloudflare_api"] = "unauthorized"
+                status_details["message"] = "后端运行正常，但 Cloudflare API Token 无效或已过期，请重新生成"
+            else:
+                status_details["cloudflare_api"] = f"error_{test_resp.status_code}"
+                status_details["message"] = f"Cloudflare API 返回异常状态码: {test_resp.status_code}"
+        except Exception as e:
+            status_details["cloudflare_api"] = "unreachable"
+            status_details["message"] = f"Cloudflare API 连接失败: {str(e)}"
+    else:
+        missing = []
+        if not cf_account:
+            missing.append("CLOUDFLARE_ACCOUNT_ID")
+        if not cf_token:
+            missing.append("CLOUDFLARE_API_TOKEN")
+        status_details["cloudflare_api"] = "not_configured"
+        status_details["message"] = f"缺少环境变量: {', '.join(missing)}"
+
+    return jsonify(status_details)
 
 
 if __name__ == "__main__":
